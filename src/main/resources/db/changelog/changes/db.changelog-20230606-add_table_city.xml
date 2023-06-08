@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+
+    <changeSet id="db.changelog-20230606-add_table_weather_location.xml-1" author="golovin">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="weather_location"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="weather_location">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="city" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="area" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lat" type="double precision">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lon" type="double precision">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="db.changelog-20230606-add_table_weather_location.xml-2" author="golovin">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="weather_location"/>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*)
+                FROM pg_indexes
+                WHERE indexname = 'city_name_idx'
+            </sqlCheck>
+        </preConditions>
+        <comment>add index for table weather_location / city_name_idx</comment>
+        <createIndex indexName="city_name_idx" tableName="weather_location">
+            <column name="city"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="db.changelog-20230606-add_table_weather_location.xml-3" author="golovin">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="weather_location"/>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*)
+                FROM pg_indexes
+                WHERE indexname = 'area_name_idx'
+            </sqlCheck>
+        </preConditions>
+        <comment>add index for table weather_location / area_name_idx</comment>
+        <createIndex indexName="area_name_idx" tableName="weather_location">
+            <column name="area"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
