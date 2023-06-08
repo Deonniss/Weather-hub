@@ -9,13 +9,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "city")
-public class City {
+@Table(name = "weather_location")
+public class WeatherLocation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String city;
+    private String area;
     private Double lat;
     private Double lon;
 }
